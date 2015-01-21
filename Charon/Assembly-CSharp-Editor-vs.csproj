@@ -46,9 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Editor\CharonSettingsWindow.cs" />
-     <Compile Include="Assets\Editor\RatersTileEditor.cs" />
-     <Compile Include="Assets\Editor\TileManager.cs" />
+     <Compile Include="Assets\Editor\CharonEditorMainWindow.cs" />
      <Compile Include="Assets\Editor\Util\RatersEditorUtil.cs" />
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
