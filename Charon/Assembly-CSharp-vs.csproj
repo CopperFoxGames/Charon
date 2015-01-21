@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\GameSettings.cs" />
      <Compile Include="Assets\Scripts\Level\LevelController.cs" />
      <Compile Include="Assets\Scripts\Level\LevelGenerator.cs" />
      <Compile Include="Assets\Scripts\Level\Tile.cs" />

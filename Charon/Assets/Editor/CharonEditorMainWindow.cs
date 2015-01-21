@@ -2,58 +2,90 @@
 using System.Collections;
 using UnityEditor;
 
-public class CharonEditorMainWindow : EditorWindow {
+[InitializeOnLoad]
+public class CharonEditorMainWindow
+{
 
-	public CharonEditorMainWindow() {
-		SceneView.onSceneGUIDelegate -= this.OnSceneGUI;
-		SceneView.onSceneGUIDelegate += this.OnSceneGUI;
+    static CharonEditorMainWindow()
+    {
+        gameSettingsObj = getGameSettings();
+
+        SceneView.onSceneGUIDelegate += OnSceneGUI;
+
+        button_itemEditor = Resources.LoadAssetAtPath("Assets/Editor/GUI/ItemEditor.png", typeof(Texture)) as Texture;
+        button_levelPacker = Resources.LoadAssetAtPath("Assets/Editor/GUI/Level Packer.png", typeof(Texture)) as Texture;
+    }
+	
+	static Texture button_itemEditor;
+	static Texture button_levelPacker;
+	static GameObject gameSettingsObj = null;
+    static GameSettings gameSettings = null;
+
+    public static bool menu_minimized = false;
+
+    static float startWidth = 256;
+    static float startHeight = 512;
+
+    static Rect pos = new Rect(8, 32, 256, 256);
+
+	static GameObject getGameSettings() {
+
+		Object ret = GameObject.FindObjectOfType (typeof(GameSettings));
+
+		return ret as GameObject;
+
 	}
-	//test
-	public static bool menu_minimized = false;
 	
-	static float startWidth = 256;
-	static float startHeight = 512;
+	static void OnSceneGUI(SceneView sceneView)
+    {
+        //begins drawing to the gui
+        Handles.BeginGUI();
+        if (gameSettingsObj)
+        {
 
-	Rect pos = new Rect (8, 32, 256, 256);
+            //minimizing the main window
+		    if(menu_minimized==false)
+            {
+			    pos.width = startWidth;
+			    pos.height = startHeight;
+		    }else{
+			    pos.width = 100;
+			    pos.height = 20;
+		    }
+		    
+            //drawinf the window to the scene view
+		    pos = GUI.Window (0, pos, windowFunction, "");
+		    
+            //drawing the level editinb buttons
+		    GUI.BeginGroup(new Rect(Screen.width-80, 8, 80, Screen.height-16));
+		    GUI.Button (new Rect (8, 8, 48, 48), button_itemEditor);
+		    GUI.Button (new Rect (8, 72, 48, 48), button_levelPacker);
+		    GUI.EndGroup ();
 
-
-	
-	[MenuItem("Charon/LevelEditor")]
-	static void ShowWindow ()
-	{
-		GetWindow(typeof(CharonEditorMainWindow), false, "Level Editor", true);
+        }
+        else
+        {
+            GUILayout.Label("No GameSettings object found! please create one!");
+            GUILayout.Button("Refresh");
+        }
+        //ends drawing to the gui
+        Handles.EndGUI();
 	}
 	
-	void OnFocus()
-	{
-		SceneView.onSceneGUIDelegate -= this.OnSceneGUI;
-		SceneView.onSceneGUIDelegate += this.OnSceneGUI;
-	}
 	
-	void OnDestroy()
-	{
-		SceneView.onSceneGUIDelegate -= this.OnSceneGUI;
-	}
-	
-	void OnSceneGUI(SceneView sceneView)
-	{
-		Handles.BeginGUI();
-
-		if(menu_minimized==false) {
-			pos.width = startWidth;
-			pos.height = startHeight;
-		}else{
-			pos.width = 100;
-			pos.height = 20;
+	static void windowFunction(int windowID)
+    {
+		
+		if(GUI.Button(new Rect(5,-1,32,16), menu_minimized ? "+" : "-"))
+        {
+			menu_minimized = !menu_minimized;
 		}
 
-		pos = GUI.Window (0, pos, windowFunction, "");
-		Handles.EndGUI();
+		if(!menu_minimized)
+        {
+			GUILayout.Label (":");
+		}
 		
-	}
-
-
-	void windowFunction(int windowID) {
 		GUI.DragWindow ();
 	}
 }
