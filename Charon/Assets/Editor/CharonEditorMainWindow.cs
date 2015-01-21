@@ -54,7 +54,7 @@ public class CharonEditorMainWindow
 		    }
 		    
             //drawinf the window to the scene view
-		    pos = GUI.Window (0, pos, windowFunction, "");
+		    pos = GUI.Window (0, pos, windowFunction, "Settings");
 		    
             //drawing the level editinb buttons
 		    GUI.BeginGroup(new Rect(Screen.width-80, 8, 80, Screen.height-16));
@@ -67,6 +67,13 @@ public class CharonEditorMainWindow
         {
             GUILayout.Label("No GameSettings object found! please create one!");
             GUILayout.Button("Refresh");
+            if (GUILayout.Button("Create GameSettings"))
+            {
+                GameObject obj = new GameObject();
+                obj.name = "GameSettings";
+                obj.AddComponent<GameSettings>();
+                gameSettingsObj = obj;
+            }
         }
         //ends drawing to the gui
         Handles.EndGUI();
